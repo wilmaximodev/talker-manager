@@ -34,14 +34,14 @@ app.get('/talker', async (req, res) => {
 });
 
 app.get('/talker/:id', async (req, res) => {
-  const talker = await readFiles();
+  const findTalker = await readFiles();
   const { id } = req.params;
-  const findId = talker.find((talk) => +talk.id === +id);
-  if(findId) {
+  const findId = findTalker.find((talk) => +talk.id === +id);
+  if (findId) {
     return res.status(200).json(findId);
   }
   return res.status(404).json({
-    message: 'Palestrande não encontrado'
+    message: 'Palestrande não encontrado',
   });
 });
 
