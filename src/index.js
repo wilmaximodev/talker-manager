@@ -10,7 +10,7 @@ const PORT = process.env.PORT || '3001';
 
 const talker = path.resolve(__dirname, './talker.json');
 
-const readFile = async () => {
+const readFiles = async () => {
   try {
     const response = await fs.readFile(talker);
     return JSON.parse(response);
@@ -25,12 +25,24 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', async (req, res) => {
   try {
-    const result = await readFile();
+    const result = await readFiles();
     return res.status(200).json(result);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: err.sqlMessage });
   }
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const talker = await readFiles();
+  const { id } = req.params;
+  const findId = talker.find((talk) => +talk.id === +id);
+  if(findId) {
+    return res.status(200).json(findId);
+  }
+  return res.status(404).json({
+    message: 'Palestrande não encontrado'
+  });
 });
 
 app.listen(PORT, () => {
