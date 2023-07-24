@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs/promises');
 const path = require('path');
-const token = require('./utils/tokenGenerate');
+const loginRoute = require('./loginRoute');
 
 const app = express();
 app.use(express.json());
@@ -46,13 +46,7 @@ app.get('/talker/:id', async (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  res.json({
-    email: 'email@email.com',
-    password: token(),
-  });
-});
+app.use('/login', loginRoute);
 
 app.listen(PORT, () => {
   console.log('Online');
