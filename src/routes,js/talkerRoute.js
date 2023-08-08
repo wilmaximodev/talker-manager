@@ -56,6 +56,7 @@ talkerRoute.post('/',
 });
 
 talkerRoute.put('/:id',
+validToken,
 validName, 
 validAge, 
 validTalk, 
