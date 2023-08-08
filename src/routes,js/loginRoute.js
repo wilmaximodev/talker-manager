@@ -1,8 +1,8 @@
 const express = require('express');
 
 const loginRoute = express.Router();
-const { checkEmail, checkPassword } = require('./middlewares/checkLogin');
-const genToken = require('./utils/tokenGenerate');
+const { checkEmail, checkPassword } = require('../middlewares/checkLogin');
+const genToken = require('../utils/tokenGenerate');
 
 const HTTP_OK_STATUS = 200;
 

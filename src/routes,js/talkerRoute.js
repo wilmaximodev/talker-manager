@@ -1,5 +1,9 @@
 const express = require('express');
-const readFiles = require('./utils/readFiles');
+const fs = require('fs/promises');
+const path = require('path');
+
+const talker = path.resolve(__dirname, '../talker.json');
+const readFiles = require('../utils/readFiles');
 const {
     validToken,
     validAge,
@@ -7,8 +11,8 @@ const {
     validTalk,
     validateWatchedAtOnBody,
     validRate,
-} = require('./middlewares/checkTalker');
-const writeData = require('./utils/writeNewTalker');
+} = require('../middlewares/checkTalker');
+const writeData = require('../utils/writeNewTalker');
 
 const talkerRoute = express.Router();
 
@@ -48,6 +52,30 @@ talkerRoute.post('/',
     res.status(201).json(newTalker);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+talkerRoute.put('/:id',
+validName, 
+validAge, 
+validTalk, 
+validateWatchedAtOnBody,
+validRate,
+async (req, res) => {
+  try {
+    const { id } = req.params;
+    const talkers = await readFiles();
+    const index = talkers.findIndex((element) => element.id === Number(id));
+    if (index < 0) {
+      return res.status(404)
+      .json({ message: 'Pessoa palestrante não encontrada' });
+    }
+    talkers[index] = { id: Number(id), ...req.body };
+    const updatedTalker = JSON.stringify(talkers, null, 2);
+    await fs.writeFile(talker, updatedTalker);
+    return res.status(200).json(talkers[index]);
+  } catch (err) {
+    res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
 });
 

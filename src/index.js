@@ -1,6 +1,6 @@
 const express = require('express');
-const loginRoute = require('./loginRoute');
-const talkerRoute = require('./talkerRoute');
+const loginRoute = require('./routes,js/loginRoute');
+const talkerRoute = require('./routes,js/talkerRoute');
 
 const app = express();
 app.use(express.json());
