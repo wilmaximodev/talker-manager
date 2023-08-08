@@ -12,7 +12,7 @@ const {
     validateWatchedAtOnBody,
     validRate,
 } = require('../middlewares/checkTalker');
-const writeData = require('../utils/writeNewTalker');
+const { writeData, deleteTalk } = require('../utils/writeNewTalker');
 
 const talkerRoute = express.Router();
 
@@ -77,6 +77,18 @@ async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
+});
+
+talkerRoute.delete('/:id', 
+  validToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      await deleteTalk(Number(id));
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
 });
 
 module.exports = talkerRoute;
